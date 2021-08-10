@@ -1,7 +1,5 @@
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed congue magna at purus 
-blandit ultrices. Nullam ut tortor eget orci faucibus pharetra. In ac felis sapien.
-In eget mi imperdiet, luctus eros eu, placerat massa. Donec rutrum, lorem at varius
-congue, tellus ligula posuere orci, eget auctor orci enim non ligula. Phasellus vel
-sodales est. Pellentesque in tellus enim. Quisque molestie purus non augue 
-fermentum ultrices. Duis eget tempus ipsum. Praesent id ex nec nisi ornare dictum.
-In hac habitasse platea dictumst. 
+Departamento em Ciencia da Computacao
+
+Bacharelado em Ciencia da Computacao
+
+Bacharelado em Filosofia  da Ciencia

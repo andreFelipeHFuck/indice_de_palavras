@@ -21,6 +21,14 @@ import Data.List
 
  -- contruirIndice :: Doc -> [([Int], Palavra)]
 
+-- Tipos 
+
+type Doc = String 
+type Linha = String 
+type Palavra = String 
+
+
+-- construirIndice :: Doc -> [([Int], Palavra)]
 construirIndice :: IO ()
 construirIndice = do 
      file_text <- readFile "texto.txt"
@@ -50,8 +58,32 @@ numeraPalavras ls =  [(fst ls, p) | p <- maior_3 (snd ls)]
 repetidos [] = []
 repetidos (l: ls) = if l `elem` ls then repetidos ls else l: repetidos ls
 
-ordenar ls  = sortOn snd ls
+--ordenar ls  = sortOn snd ls
+
+--
+
+
+menor_valor :: Ord a1 => (a2, a1) -> [(a2, a1)] -> (a2, a1)
+menor_valor ini [] = ini
+menor_valor ini (l: ls) = if snd ini < snd l then menor_valor ini ls else menor_valor l ls
+
+menor :: Ord a1 => [(a2, a1)] -> (a2, a1)
+menor l = menor_valor (head l) l
+
+
+conta_removerElem :: (Eq a, Eq t, Num t) => t -> a -> [a] -> [a]
+conta_removerElem _ _ [] = []
+conta_removerElem c n (l:ls) | n == l && c == 0 = conta_removerElem (c + 1) n ls
+                             | otherwise = l: conta_removerElem c n ls
+
+removerElem n l = conta_removerElem 0 n l
+
+ordenar [] = []
+ordenar l = menor l: ordenar (removerElem (menor l) l)
+
+--
 
 agrupar ls = [([fst n | n <- ls, (snd p) == (snd n)], snd p)| p <- ls]
 
 eliminarRep ls = repetidos ls
+
