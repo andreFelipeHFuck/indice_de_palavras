@@ -1,23 +1,7 @@
-import System.IO
-import Data.Char
-
-
 -- Aluno: André Felipe Fuck
 
--- HaskellTrabalho
-
--- Objetivo
-{-
-    Definir uma função que, dado um documento, gera um índice das 
-    palavras que ocorrem nesse documento.
--}
- -- Numerar as linha s do documento:
-
-
-
--- Programa principal
-
- -- contruirIndice :: Doc -> [([Int], Palavra)]
+import System.IO
+import Data.Char
 
 -- Tipos 
 
@@ -25,13 +9,13 @@ type Doc = String
 type Linha = String 
 type Palavra = String 
 
-
 main :: IO ()
 main = do putStr "Arquivo: "
           nome <- getLine
-          txt <- readFile nome
+          txt <- readFile nome  
+          putStrLn "Indice:\n"                      
           imprimir (contruirIndice txt)
-
+         
 contruirIndice :: Doc -> [([Int], Palavra)]
 contruirIndice doc = do 
                       let lower_txt = map toLower doc -- Passando todas as palavras para letra minúscula
@@ -47,14 +31,18 @@ contruirIndice doc = do
 imprimir [] = putStrLn ""
 imprimir ((n, l):ls) = do 
                        putStr l
-                       putStr "............................"
-                       putStrLn (show n)
+                       putStr "............"
+                       imprimir_lista n
                        imprimir ls
 
--- Higienização 
+imprimir_lista [] = putStrLn ""
+imprimir_lista (l: ls) = do
+                         putStr (show l)
+                         putStr " "
+                         imprimir_lista ls
+
 higieniza :: [Char] -> [Char]
 higieniza ls =  [l | l <- ls, isAlpha l || isSpace l]
-
 
 maior_3 l =  repetidos [p | p <- words(l), length p >= 3]
 
@@ -68,10 +56,8 @@ numeraPalavras' ls =  [(fst ls, p) | p <- maior_3 (snd ls)]
 
 numeraPalavras'' ls = map numeraPalavras' ls
  
-
 repetidos [] = []
 repetidos (l: ls) = if l `elem` ls then repetidos ls else l: repetidos ls
-
 
 menor_valor ini [] = ini
 menor_valor ini (l: ls) = if snd ini <= snd l 
@@ -91,11 +77,8 @@ ordenar :: [(Int, Palavra)] -> [(Int, Palavra)]
 ordenar [] = []
 ordenar l = menor l: ordenar (removerElem (menor l) l)
 
---
-
 agrupar :: [(Int, Palavra)] -> [([Int], Palavra)]
 agrupar ls = [([fst n | n <- ls, (snd p) == (snd n)], snd p)| p <- ls]
 
 eliminarRep ::[([Int], Palavra)] -> [([Int], Palavra)]
 eliminarRep ls = repetidos ls
-
