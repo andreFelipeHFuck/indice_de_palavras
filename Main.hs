@@ -24,7 +24,7 @@ contruirIndice doc = do
                       let num_linhas = numLinhas hig_file_text
                       let num_palavras = numeraPalavras num_linhas
                       let ordenar_palavras = ordenar num_palavras
-                      let agrupar_palavras = agrupar ordenar_palavras
+                      let agrupar_palavras = agrupar' ordenar_palavras
                       let elinarRep_palavras = eliminarRep agrupar_palavras
                       elinarRep_palavras
 
@@ -80,5 +80,15 @@ ordenar l = menor l: ordenar (removerElem (menor l) l)
 agrupar :: [(Int, Palavra)] -> [([Int], Palavra)]
 agrupar ls = [([fst n | n <- ls, (snd p) == (snd n)], snd p)| p <- ls]
 
+agrupar' :: [(Int, Palavra)] -> [([Int], Palavra)]
+agrupar' [] = []
+agrupar' (l:ls) = ind (snd l) (l:ls) : agrupar' (repetidos' (snd l) ls)
+
+repetidos' _ [] = []
+repetidos' p (l:ls) = if p == (snd l) then repetidos' p ls else l: repetidos' p ls
+
+ind p ls = ([fst n | n <- ls, p == (snd n)], p)
+
 eliminarRep ::[([Int], Palavra)] -> [([Int], Palavra)]
-eliminarRep ls = repetidos ls
+eliminarRep [] = []
+eliminarRep (l:ls) = (repetidos (fst l), snd l) : eliminarRep ls
