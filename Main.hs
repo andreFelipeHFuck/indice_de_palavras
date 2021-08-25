@@ -2,6 +2,7 @@
 
 import System.IO
 import Data.Char
+import Data.List
 
 -- Tipos 
 
@@ -24,7 +25,7 @@ contruirIndice doc = do
                       let num_linhas = numLinhas hig_file_text
                       let num_palavras = numeraPalavras num_linhas
                       let ordenar_palavras = ordenar num_palavras
-                      let agrupar_palavras = agrupar' ordenar_palavras
+                      let agrupar_palavras = agrupar ordenar_palavras
                       let elinarRep_palavras = eliminarRep agrupar_palavras
                       elinarRep_palavras
 
@@ -59,30 +60,13 @@ numeraPalavras'' ls = map numeraPalavras' ls
 repetidos [] = []
 repetidos (l: ls) = if l `elem` ls then repetidos ls else l: repetidos ls
 
-menor_valor ini [] = ini
-menor_valor ini (l: ls) = if snd ini <= snd l 
-                          then menor_valor ini ls
-                          else menor_valor l ls
-
-menor :: Ord a1 => [(a2, a1)] -> (a2, a1)
-menor l = menor_valor (head l) l
-
-conta_removerElem _ [] = []
-conta_removerElem  n (l:ls) | n == l  = conta_removerElem  n ls
-                            | otherwise = l: conta_removerElem  n ls
-
-removerElem n l = conta_removerElem  n l
 
 ordenar :: [(Int, Palavra)] -> [(Int, Palavra)]
-ordenar [] = []
-ordenar l = menor l: ordenar (removerElem (menor l) l)
+ordenar ls = sortOn snd ls
 
 agrupar :: [(Int, Palavra)] -> [([Int], Palavra)]
-agrupar ls = [([fst n | n <- ls, (snd p) == (snd n)], snd p)| p <- ls]
-
-agrupar' :: [(Int, Palavra)] -> [([Int], Palavra)]
-agrupar' [] = []
-agrupar' (l:ls) = ind (snd l) (l:ls) : agrupar' (repetidos' (snd l) ls)
+agrupar [] = []
+agrupar (l:ls) = ind (snd l) (l:ls) : agrupar (repetidos' (snd l) ls)
 
 repetidos' _ [] = []
 repetidos' p (l:ls) = if p == (snd l) then repetidos' p ls else l: repetidos' p ls
